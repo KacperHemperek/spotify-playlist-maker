@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import Button from "react-bootstrap/esm/Button";
 
+import { useEffect, useRef, useState } from "react";
+import { Form, InputGroup } from "react-bootstrap";
+import Container from "react-bootstrap/esm/Container";
 function App() {
     const client_id = "71a0250dc8674aa0b6d49ec82695bfab";
     const redirect = "http://localhost:3000";
     const auth = "https://accounts.spotify.com/authorize";
     const type = "token";
-
+    const searchRef = useRef();
     const [spotifyToken, setSpotifyToken] = useState("");
 
     useEffect(() => {
@@ -14,14 +17,13 @@ function App() {
         const token = hash.substring(1).split("&")[0].split("=")[1];
 
         setSpotifyToken(token);
+        console.log(searchRef.value);
     }, []);
 
     useEffect(() => {
-        console.log(spotifyToken);
-
         const fetchArtist = async () => {
             const res = await fetch(
-                `https://api.spotify.com/v1/artists/5K4W6rqBFWDnAN6FQUkS6x`,
+                `https://api.spotify.com/v1/search?q=Hi&type=track`,
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -30,19 +32,44 @@ function App() {
                 }
             );
             const data = await res.json();
-            console.log(data);
+            console.log(data.tracks.items);
         };
         fetchArtist();
     }, [spotifyToken]);
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log(searchRef.current.value);
+    };
+
     return (
-        <div className="App text-center ">
-            <a
-                className="btn btn-primary mt-5"
-                href={`${auth}?response_type=${type}&client_id=${client_id}&redirect_uri=${redirect}`}
-            >
-                Log in
-            </a>
+        <div className="App text-center">
+            <Container className="mt-5 p-5">
+                <Form onSubmit={handleSubmit}>
+                    <InputGroup>
+                        <Form.Control
+                            placeholder="Search"
+                            ref={searchRef}
+                            type="text"
+                            className=""
+                        />
+                        <Button
+                            variant="success "
+                            className="btn-lg"
+                            type="submit"
+                        >
+                            Search
+                        </Button>
+                    </InputGroup>
+                </Form>
+
+                <a
+                    className="btn btn-primary mt-5"
+                    href={`${auth}?response_type=${type}&client_id=${client_id}&redirect_uri=${redirect}`}
+                >
+                    Log in
+                </a>
+            </Container>
         </div>
     );
 }
