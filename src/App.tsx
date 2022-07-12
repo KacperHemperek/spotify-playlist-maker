@@ -1,17 +1,17 @@
 import Button from "react-bootstrap/esm/Button";
-
+import React from "react";
 import { useEffect, useRef, useState } from "react";
 import { Form, InputGroup } from "react-bootstrap";
 import Container from "react-bootstrap/esm/Container";
-import useSpotify from "./hooks/useSpotify";
-function App() {
+import { getSearchResults } from "./utils/Spotify.utils";
+
+const App = () => {
     const client_id = "71a0250dc8674aa0b6d49ec82695bfab";
     const redirect = "http://localhost:3000";
     const auth = "https://accounts.spotify.com/authorize";
     const type = "token";
-    const searchRef = useRef();
+    const searchRef = useRef<HTMLInputElement>(null);
     const [spotifyToken, setSpotifyToken] = useState("");
-    const { getSearchResults } = useSpotify();
 
     useEffect(() => {
         const hash = window.location.hash;
@@ -21,33 +21,17 @@ function App() {
         setSpotifyToken(token);
     }, []);
 
-    useEffect(() => {
-        // const fetchArtist = async () => {
-        //     const res = await fetch(
-        //         `https://api.spotify.com/v1/search?q=Hi&type=track`,
-        //         {
-        //             headers: {
-        //                 "Content-Type": "application/json",
-        //                 Authorization: "Bearer " + spotifyToken,
-        //             },
-        //         }
-        //     );
-        //     const data = await res.json();
-        //     console.log(data.tracks.items);
-        // };
-        // fetchArtist();
-    }, [spotifyToken]);
-
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(searchRef.current.value);
-        getSearchResults(
-            searchRef.current.value,
-            spotifyToken,
-            "track",
-            null,
-            50
-        );
+        if (searchRef.current?.value) {
+            console.log(searchRef.current.value);
+            getSearchResults(
+                searchRef.current.value,
+                spotifyToken,
+                "track",
+                50
+            );
+        }
     };
 
     return (
@@ -80,6 +64,6 @@ function App() {
             </Container>
         </div>
     );
-}
+};
 
 export default App;
