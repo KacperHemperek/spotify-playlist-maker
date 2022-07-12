@@ -5,7 +5,7 @@ import { Form, InputGroup } from "react-bootstrap";
 import Container from "react-bootstrap/esm/Container";
 import { getSearchResults } from "./utils/Spotify.utils";
 
-const App = () => {
+const App = (): JSX.Element => {
     const client_id = "71a0250dc8674aa0b6d49ec82695bfab";
     const redirect = "http://localhost:3000";
     const auth = "https://accounts.spotify.com/authorize";
