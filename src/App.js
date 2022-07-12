@@ -3,6 +3,7 @@ import Button from "react-bootstrap/esm/Button";
 import { useEffect, useRef, useState } from "react";
 import { Form, InputGroup } from "react-bootstrap";
 import Container from "react-bootstrap/esm/Container";
+import useSpotify from "./hooks/useSpotify";
 function App() {
     const client_id = "71a0250dc8674aa0b6d49ec82695bfab";
     const redirect = "http://localhost:3000";
@@ -10,6 +11,7 @@ function App() {
     const type = "token";
     const searchRef = useRef();
     const [spotifyToken, setSpotifyToken] = useState("");
+    const { getSearchResults } = useSpotify();
 
     useEffect(() => {
         const hash = window.location.hash;
@@ -17,29 +19,35 @@ function App() {
         const token = hash.substring(1).split("&")[0].split("=")[1];
 
         setSpotifyToken(token);
-        console.log(searchRef.value);
     }, []);
 
     useEffect(() => {
-        const fetchArtist = async () => {
-            const res = await fetch(
-                `https://api.spotify.com/v1/search?q=Hi&type=track`,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: "Bearer " + spotifyToken,
-                    },
-                }
-            );
-            const data = await res.json();
-            console.log(data.tracks.items);
-        };
-        fetchArtist();
+        // const fetchArtist = async () => {
+        //     const res = await fetch(
+        //         `https://api.spotify.com/v1/search?q=Hi&type=track`,
+        //         {
+        //             headers: {
+        //                 "Content-Type": "application/json",
+        //                 Authorization: "Bearer " + spotifyToken,
+        //             },
+        //         }
+        //     );
+        //     const data = await res.json();
+        //     console.log(data.tracks.items);
+        // };
+        // fetchArtist();
     }, [spotifyToken]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(searchRef.current.value);
+        getSearchResults(
+            searchRef.current.value,
+            spotifyToken,
+            "track",
+            null,
+            100
+        );
     };
 
     return (
