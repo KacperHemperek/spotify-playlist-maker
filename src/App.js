@@ -46,7 +46,7 @@ function App() {
             spotifyToken,
             "track",
             null,
-            100
+            50
         );
     };
 
