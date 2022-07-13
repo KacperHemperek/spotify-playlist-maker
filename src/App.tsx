@@ -44,7 +44,7 @@ const App = (): JSX.Element => {
                 );
                 console.log(res);
                 setSearchResults(res);
-                const playlistID = await createPlaylist(spotifyToken);
+                const playlistID = await createPlaylist(spotifyToken, "Test playlist");
                 addToPlaylist(spotifyToken, playlistID, res);
                 setLoading(false);
             } catch (err) {
