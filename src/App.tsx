@@ -1,7 +1,7 @@
 import Button from "react-bootstrap/esm/Button";
 import React from "react";
 import { useEffect, useRef, useState } from "react";
-import { Form, InputGroup } from "react-bootstrap";
+import { Col, Form, InputGroup, Modal, Row } from "react-bootstrap";
 import Container from "react-bootstrap/esm/Container";
 import { getSearchResults, getMultipleTracks } from "./utils/Spotify.utils";
 
@@ -10,11 +10,15 @@ const App = (): JSX.Element => {
     const redirect = "http://localhost:3000";
     const auth = "https://accounts.spotify.com/authorize";
     const type = "token";
-    const searchRef = useRef<HTMLInputElement>(null);
-    const [spotifyToken, setSpotifyToken] = useState("");
+    const textRef = useRef<HTMLTextAreaElement | null>(null);
+    const [spotifyToken, setSpotifyToken] = useState<string>("");
+    const [showPopup, setShowPopup] = useState<boolean>(false);
 
     useEffect(() => {
         const hash = window.location.hash;
+        if (!hash) {
+            setShowPopup(true);
+        }
 
         const token = hash.substring(1).split("&")[0].split("=")[1];
 
@@ -23,10 +27,10 @@ const App = (): JSX.Element => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (searchRef.current?.value) {
+        if (textRef.current?.value) {
             try {
                 const searchResult = await getMultipleTracks(
-                    searchRef.current.value,
+                    textRef.current.value,
                     spotifyToken
                 );
                 searchResult.forEach((result) => {
@@ -39,32 +43,46 @@ const App = (): JSX.Element => {
     };
 
     return (
-        <div className="App text-center">
-            <Container className="mt-5 p-5">
-                <Form onSubmit={handleSubmit}>
-                    <InputGroup>
-                        <Form.Control
-                            placeholder="Search"
-                            ref={searchRef}
-                            type="text"
-                            className=""
-                        />
-                        <Button
-                            variant="success "
-                            className="btn-lg"
-                            type="submit"
-                        >
-                            Search
-                        </Button>
-                    </InputGroup>
-                </Form>
+        <div className="App ">
+            <Modal show={showPopup} backdrop="static" centered>
+                <Modal.Header>
+                    <Modal.Title>
+                        You have to log in with your spotify to use App
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Footer>
+                    <a
+                        className="btn btn-primary "
+                        href={`${auth}?response_type=${type}&client_id=${client_id}&redirect_uri=${redirect}`}
+                    >
+                        Log in
+                    </a>
+                </Modal.Footer>
+            </Modal>
 
-                <a
-                    className="btn btn-primary mt-5"
-                    href={`${auth}?response_type=${type}&client_id=${client_id}&redirect_uri=${redirect}`}
-                >
-                    Log in
-                </a>
+            <Container className="mx-md-5 p-3 p-md-5 mt-5 ">
+                <Row className="g-5">
+                    <Col md>
+                        <Form onSubmit={handleSubmit}>
+                            <Form.Control
+                                ref={textRef}
+                                as="textarea"
+                                className=""
+                                rows={4}
+                            />
+                            <Button
+                                variant="success "
+                                className="mt-4"
+                                type="submit"
+                            >
+                                Create Playlist
+                            </Button>
+                        </Form>
+                    </Col>
+                    <Col>
+                    
+                    </Col>
+                </Row>
             </Container>
         </div>
     );
