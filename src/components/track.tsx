@@ -1,4 +1,5 @@
 import React from "react";
+import { ListGroup } from "react-bootstrap";
 
 type TrackProp = {
     authors: any[];
@@ -7,25 +8,30 @@ type TrackProp = {
     id: string;
 };
 
-const TrackCard = ({ authors, title, img, id }: TrackProp) => {
+const Track = ({ authors, title, img, id }: TrackProp) => {
     return (
-        <div className="track-container" key={id}>
-            <table>
-                <tr>
-                    <th>
-                        <img
-                            alt={`track-${title}`}
-                            src={img}
-                            width="50"
-                            height="50"
-                        />
-                    </th>
-                    <th>{title}</th>
-                    <th>{authors.join(", ")}</th>
-                </tr>
-            </table>
-        </div>
+        <ListGroup.Item>
+            <div>
+                {/* <table>
+                    <tbody>
+                        <tr>
+                            <th>
+                                <img
+                                    alt={`track-${title}`}
+                                    src={img}
+                                    width="50"
+                                    height="50"
+                                />
+                            </th>
+                            <th>{title}</th>
+                            <th>{authors.join(", ")}</th>
+                        </tr>
+                    </tbody>
+                </table> */}
+                {title}
+            </div>
+        </ListGroup.Item>
     );
 };
 
-export default TrackCard;
+export default Track;

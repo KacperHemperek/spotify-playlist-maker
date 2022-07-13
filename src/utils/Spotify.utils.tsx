@@ -19,7 +19,7 @@ export const getMultipleTracks = async (
     input: string,
     token: string
 ): Promise<any[]> => {
-    let array: any[] = input.split(" ");
+    let array: any[] = input.trim().split(" ");
     const resultArray: any[] = [];
     while (array.length > 0) {
         try {

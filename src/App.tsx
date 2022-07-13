@@ -4,13 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Col, Form, InputGroup, ListGroup, Modal, Row } from "react-bootstrap";
 import Container from "react-bootstrap/esm/Container";
 import { getMultipleTracks } from "./utils/Spotify.utils";
-
-export type Track = {
-    id: string;
-    title: string;
-    authors: string[];
-    img: string;
-};
+import Track from "./components/Track";
 
 const App = (): JSX.Element => {
     const client_id = "71a0250dc8674aa0b6d49ec82695bfab";
@@ -95,8 +89,14 @@ const App = (): JSX.Element => {
                     </Col>
                     <Col md="5">
                         <ListGroup>
-                            {searchResults.map((track) => (
-                                <ListGroup.Item>{track.name}</ListGroup.Item>
+                            {searchResults.map((track, idx) => (
+                                <Track
+                                    authors={track.artists}
+                                    id={track.id}
+                                    title={track.name}
+                                    img={track.album.images[2]}
+                                    key={idx}
+                                />
                             ))}
                         </ListGroup>
                     </Col>
