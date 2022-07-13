@@ -1,9 +1,9 @@
 import Button from "react-bootstrap/esm/Button";
-import React from "react";
+import React, { ChangeEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import { Col, Form, InputGroup, ListGroup, Modal, Row } from "react-bootstrap";
 import Container from "react-bootstrap/esm/Container";
-import { getSearchResults, getMultipleTracks } from "./utils/Spotify.utils";
+import { getMultipleTracks } from "./utils/Spotify.utils";
 
 export type Track = {
     title: string;
@@ -16,9 +16,11 @@ const App = (): JSX.Element => {
     const redirect = "http://localhost:3000";
     const auth = "https://accounts.spotify.com/authorize";
     const type = "token";
-    const textRef = useRef<HTMLTextAreaElement | null>(null);
+    const searchRef = useRef<HTMLInputElement | null>(null);
     const [spotifyToken, setSpotifyToken] = useState<string>("");
     const [showPopup, setShowPopup] = useState<boolean>(false);
+    const [searchResults, setSearchResults] = useState<any[]>([]);
+    const [searchValue, setSearchValue] = useState<string>("");
 
     useEffect(() => {
         const hash = window.location.hash;
@@ -33,22 +35,23 @@ const App = (): JSX.Element => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        console.log("cokolwiek");
-
-        if (textRef.current?.value) {
+        if (searchRef.current?.value) {
             try {
-                const searchResult = await getMultipleTracks(
-                    textRef.current.value,
+                const res = await getMultipleTracks(
+                    searchRef.current.value,
                     spotifyToken
                 );
-                searchResult.forEach((result) => {
-                    console.log(result?.name);
-                });
+                console.log(res);
+                setSearchResults(res);
             } catch (err) {
                 console.error(err);
             }
         }
+    };
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        console.log(e.target.value);
+        setSearchValue(e.target.value);
     };
 
     return (
@@ -69,26 +72,33 @@ const App = (): JSX.Element => {
                 </Modal.Footer>
             </Modal>
 
-            <Container className="mx-md-5 p-3 p-md-5 mt-5 ">
+            <Container className="mx-md-5 p-3 p-md-5 mt-5 text-center">
                 <Row className="g-5">
-                    <Col md>
+                    <Col md="7">
                         <Form onSubmit={handleSubmit}>
-                            <Form.Control
-                                ref={textRef}
-                                as="textarea"
-                                className=""
-                                rows={4}
-                            />
-                            <Button
-                                variant="success "
-                                className="mt-4"
-                                type="submit"
-                            >
-                                Create Playlist
-                            </Button>
+                            <InputGroup>
+                                <Form.Control
+                                    ref={searchRef}
+                                    type="text"
+                                    onChange={handleChange}
+                                />
+                                <Button
+                                    variant="success"
+                                    type="submit"
+                                    disabled={searchRef.current?.value === ""}
+                                >
+                                    Create Playlist
+                                </Button>
+                            </InputGroup>
                         </Form>
                     </Col>
-                    <Col></Col>
+                    <Col md="5">
+                        <ListGroup>
+                            {searchResults.map((track) => (
+                                <ListGroup.Item>{track.name}</ListGroup.Item>
+                            ))}
+                        </ListGroup>
+                    </Col>
                 </Row>
             </Container>
         </div>
