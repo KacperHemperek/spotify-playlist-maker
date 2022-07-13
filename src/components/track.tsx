@@ -1,5 +1,4 @@
 import React from "react";
-import { Track } from "../App";
 
 type TrackProp = {
     authors: any[];
