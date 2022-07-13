@@ -7,5 +7,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: visible;
 }
+* {
+    margin: 0;
+}
 
 

@@ -1,36 +1,48 @@
 import React from "react";
-import { ListGroup } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 
 type TrackProp = {
     authors: any[];
     title: string;
     img: string;
-    id: string;
+    uri: string;
 };
 
-const Track = ({ authors, title, img, id }: TrackProp) => {
+const Track = ({ authors, title, img, uri }: TrackProp) => {
+    const centerText = {
+        display: "flex",
+        alignItems: "center",
+        margin: "0 2rem",
+    };
+
+    const removeDecoration = {};
+
     return (
-        <ListGroup.Item>
-            <div>
-                {/* <table>
-                    <tbody>
-                        <tr>
-                            <th>
-                                <img
-                                    alt={`track-${title}`}
-                                    src={img}
-                                    width="50"
-                                    height="50"
-                                />
-                            </th>
-                            <th>{title}</th>
-                            <th>{authors.join(", ")}</th>
-                        </tr>
-                    </tbody>
-                </table> */}
-                {title}
-            </div>
-        </ListGroup.Item>
+        <a href={uri} style={{ textDecoration: "none" }} className="text-dark">
+            <Card className="py-3 px-4 mb-3">
+                <div
+                    style={{
+                        display: "flex",
+
+                        alignItems: "center",
+                    }}
+                >
+                    <img
+                        width={"60px"}
+                        height={"60px"}
+                        style={{ borderRadius: "100%" }}
+                        alt={`track-${title}`}
+                        src={img}
+                    />
+
+                    <div>
+                        <h5 style={centerText}>{title}</h5>
+
+                        <p style={centerText}>{authors.join(", ")}</p>
+                    </div>
+                </div>
+            </Card>
+        </a>
     );
 };
 

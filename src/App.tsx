@@ -1,7 +1,7 @@
 import Button from "react-bootstrap/esm/Button";
 import React, { ChangeEvent } from "react";
 import { useEffect, useRef, useState } from "react";
-import { Col, Form, InputGroup, ListGroup, Modal, Row } from "react-bootstrap";
+import { Col, Form, InputGroup, Modal, Row, Stack } from "react-bootstrap";
 import Container from "react-bootstrap/esm/Container";
 import { getMultipleTracks } from "./utils/Spotify.utils";
 import Track from "./components/Track";
@@ -16,6 +16,7 @@ const App = (): JSX.Element => {
     const [showPopup, setShowPopup] = useState<boolean>(false);
     const [searchResults, setSearchResults] = useState<any[]>([]);
     const [searchValue, setSearchValue] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
         const hash = window.location.hash;
@@ -32,14 +33,17 @@ const App = (): JSX.Element => {
         e.preventDefault();
         if (searchRef.current?.value) {
             try {
+                setLoading(true);
                 const res = await getMultipleTracks(
                     searchRef.current.value,
                     spotifyToken
                 );
                 console.log(res);
                 setSearchResults(res);
+                setLoading(false);
             } catch (err) {
                 console.error(err);
+                setLoading(false);
             }
         }
     };
@@ -82,23 +86,27 @@ const App = (): JSX.Element => {
                                     type="submit"
                                     disabled={searchRef.current?.value === ""}
                                 >
-                                    Create Playlist
+                                    {loading ? "Loading..." : "Create Playlist"}
                                 </Button>
                             </InputGroup>
                         </Form>
                     </Col>
                     <Col md="5">
-                        <ListGroup>
-                            {searchResults.map((track, idx) => (
-                                <Track
-                                    authors={track.artists}
-                                    id={track.id}
-                                    title={track.name}
-                                    img={track.album.images[2]}
-                                    key={idx}
-                                />
-                            ))}
-                        </ListGroup>
+                        <Stack>
+                            {searchResults.map(
+                                ({ artists, name, album, uri }, idx) => (
+                                    <Track
+                                        authors={artists.map(
+                                            (item: any) => item.name
+                                        )}
+                                        title={name}
+                                        img={album.images[2].url}
+                                        key={idx}
+                                        uri={uri}
+                                    />
+                                )
+                            )}
+                        </Stack>
                     </Col>
                 </Row>
             </Container>

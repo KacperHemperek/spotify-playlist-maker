@@ -47,7 +47,6 @@ export const getSearchResults = async (
     offset: number = 0
 ): Promise<any> => {
     let track: any;
-
     if (q && token) {
         if (limit > 50) {
             console.error("Limit must be less than 50!");
