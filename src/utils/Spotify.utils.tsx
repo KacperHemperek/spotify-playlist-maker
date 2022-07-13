@@ -27,7 +27,6 @@ export const getMultipleTracks = async (
             console.log(res);
             resultArray.push(res);
             array.splice(0, 1);
-            continue;
         } catch (err) {
             if (array.length <= 1) {
                 throw new Error("Couldn't create playlist");
@@ -53,7 +52,7 @@ export const getSearchResults = async (
         if (limit > 50) {
             console.error("Limit must be less than 50!");
         }
-        while (offset <= 1000) {
+        while (offset <= 400) {
             let url = `search?${`q=${q}`}${`&type=${type}`}${
                 limit != null && limit <= 50 ? `&limit=${limit}` : ""
             }${offset != null ? `&offset=${offset}` : ""}`;
@@ -72,8 +71,9 @@ export const getSearchResults = async (
                 if (track !== undefined) {
                     return track;
                 }
-            } catch (err) {
-                throw new Error(err.message);
+            } catch (err: any) {
+                const error = err.message;
+                throw new Error(error);
             }
         }
         throw new Error("Couldn't find in spotify search");
