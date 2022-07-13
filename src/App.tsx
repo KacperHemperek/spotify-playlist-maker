@@ -6,8 +6,9 @@ import Container from "react-bootstrap/esm/Container";
 import { getMultipleTracks } from "./utils/Spotify.utils";
 
 export type Track = {
+    id: string;
     title: string;
-    author: string;
+    authors: string[];
     img: string;
 };
 
