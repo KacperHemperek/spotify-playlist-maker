@@ -3,7 +3,7 @@ import React from "react";
 import { useEffect, useRef, useState } from "react";
 import { Form, InputGroup } from "react-bootstrap";
 import Container from "react-bootstrap/esm/Container";
-import { getSearchResults } from "./utils/Spotify.utils";
+import { getSearchResults, getMultipleTracks } from "./utils/Spotify.utils";
 
 const App = (): JSX.Element => {
     const client_id = "71a0250dc8674aa0b6d49ec82695bfab";
@@ -24,13 +24,17 @@ const App = (): JSX.Element => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (searchRef.current?.value) {
-            console.log(searchRef.current.value);
-            getSearchResults(
-                searchRef.current.value,
-                spotifyToken,
-                "track",
-                50
-            );
+            try {
+                const searchResult = await getMultipleTracks(
+                    searchRef.current.value,
+                    spotifyToken
+                );
+                searchResult.forEach((result) => {
+                    console.log(result?.name);
+                });
+            } catch (err) {
+                console.error(err);
+            }
         }
     };
 
