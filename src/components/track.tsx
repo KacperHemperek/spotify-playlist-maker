@@ -15,8 +15,6 @@ const Track = ({ authors, title, img, uri }: TrackProp) => {
         margin: "0 2rem",
     };
 
-    const removeDecoration = {};
-
     return (
         <a href={uri} style={{ textDecoration: "none" }} className="text-dark">
             <Card className="py-3 px-4 mb-3">
@@ -38,7 +36,13 @@ const Track = ({ authors, title, img, uri }: TrackProp) => {
                     <div>
                         <h5 style={centerText}>{title}</h5>
 
-                        <p style={centerText}>{authors.join(", ")}</p>
+                        <p style={centerText}>
+                            {authors.length > 2
+                                ? [authors[0], authors[1]]
+                                      .join(", ")
+                                      .concat(" ...")
+                                : authors.join(", ")}
+                        </p>
                     </div>
                 </div>
             </Card>
