@@ -41,7 +41,7 @@ export const getMultipleTracks = async (
 
 export const createPlaylist = async (
     token: string,
-    name: string
+    name: string = "New Playlist",
 ): Promise<any> => {
         try {
             const userdata = await fetchFromSpotify("me", token)

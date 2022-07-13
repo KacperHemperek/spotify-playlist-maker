@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Col, Form, InputGroup, Modal, Row, Stack } from "react-bootstrap";
 import Container from "react-bootstrap/esm/Container";
 import { getMultipleTracks, createPlaylist, addToPlaylist } from "./utils/Spotify.utils";
-import Track from "./components/track";
+import Track from "./components/Track";
 
 const App = (): JSX.Element => {
     const client_id = "71a0250dc8674aa0b6d49ec82695bfab";
@@ -12,6 +12,7 @@ const App = (): JSX.Element => {
     const auth = "https://accounts.spotify.com/authorize";
     const type = "token";
     const searchRef = useRef<HTMLInputElement | null>(null);
+    const playlistNameRef = useRef<HTMLInputElement | null>(null);
     const [spotifyToken, setSpotifyToken] = useState<string>("");
     const [showPopup, setShowPopup] = useState<boolean>(false);
     const [searchResults, setSearchResults] = useState<any[]>([]);
@@ -40,7 +41,7 @@ const App = (): JSX.Element => {
                 );
                 console.log(res);
                 setSearchResults(res);
-                const playlistID = await createPlaylist(spotifyToken, "Test playlist");
+                const playlistID = await createPlaylist(spotifyToken, playlistNameRef.current?.value);
                 addToPlaylist(spotifyToken, playlistID, res);
                 setLoading(false);
             } catch (err) {
@@ -75,6 +76,16 @@ const App = (): JSX.Element => {
             <Container className="mx-md-5 p-3 p-md-5 mt-5 text-center">
                 <Row className="g-5">
                     <Col md="7">
+                    <Form className="mb-5" onSubmit={handleSubmit}>
+                            <InputGroup>
+                                <Form.Control
+                                    ref={playlistNameRef}
+                                    type="text"
+                                    placeholder="Playlist Name"
+                                />
+                            </InputGroup>
+                        </Form>
+
                         <Form onSubmit={handleSubmit}>
                             <InputGroup>
                                 <Form.Control
@@ -91,6 +102,8 @@ const App = (): JSX.Element => {
                                 </Button>
                             </InputGroup>
                         </Form>
+
+                        
                     </Col>
                     <Col md="5">
                         <Stack>
@@ -111,6 +124,8 @@ const App = (): JSX.Element => {
                     </Col>
                 </Row>
             </Container>
+
+            
         </div>
     );
 };
