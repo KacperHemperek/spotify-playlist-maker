@@ -9,7 +9,7 @@ export type Track = {
     title: string;
     author: string;
     img: string;
-}
+};
 
 const App = (): JSX.Element => {
     const client_id = "71a0250dc8674aa0b6d49ec82695bfab";
@@ -33,9 +33,9 @@ const App = (): JSX.Element => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        console.log("lalala");
         if (textRef.current?.value) {
             try {
-                console.log("lalla");
                 const searchResult = await getMultipleTracks(
                     textRef.current.value,
                     spotifyToken
