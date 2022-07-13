@@ -3,7 +3,7 @@ import React, { ChangeEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import { Col, Form, InputGroup, Modal, Row, Stack } from "react-bootstrap";
 import Container from "react-bootstrap/esm/Container";
-import { getMultipleTracks } from "./utils/Spotify.utils";
+import { getMultipleTracks, createPlaylist, addToPlaylist } from "./utils/Spotify.utils";
 import Track from "./components/Track";
 
 const App = (): JSX.Element => {
@@ -40,6 +40,8 @@ const App = (): JSX.Element => {
                 );
                 console.log(res);
                 setSearchResults(res);
+                const playlistID = await createPlaylist(spotifyToken);
+                addToPlaylist(spotifyToken, playlistID, res);
                 setLoading(false);
             } catch (err) {
                 console.error(err);
