@@ -3,8 +3,12 @@ import React, { ChangeEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import { Col, Form, InputGroup, Modal, Row, Stack } from "react-bootstrap";
 import Container from "react-bootstrap/esm/Container";
-import { getMultipleTracks, createPlaylist, addToPlaylist } from "./utils/Spotify.utils";
-import Track from "./components/track";
+import {
+    getMultipleTracks,
+    createPlaylist,
+    addToPlaylist,
+} from "./utils/Spotify.utils";
+import Track from "./components/Track";
 
 const App = (): JSX.Element => {
     const client_id = "71a0250dc8674aa0b6d49ec82695bfab";
