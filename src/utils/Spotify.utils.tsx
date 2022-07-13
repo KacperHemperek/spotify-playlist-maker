@@ -32,7 +32,8 @@ export const getMultipleTracks = async (
             if (array.length <= 1) {
                 throw new Error("Couldn't create playlist");
             } else {
-                array[0] = [array[0], array[1]].join(" ");
+                const firstItem = array.splice(0, 2).join(" ");
+                array.unshift(firstItem);
             }
         }
     }
