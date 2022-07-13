@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Col, Form, InputGroup, Modal, Row, Stack } from "react-bootstrap";
 import Container from "react-bootstrap/esm/Container";
 import { getMultipleTracks, createPlaylist, addToPlaylist } from "./utils/Spotify.utils";
-import Track from "./components/Track";
+import Track from "./components/track";
 
 const App = (): JSX.Element => {
     const client_id = "71a0250dc8674aa0b6d49ec82695bfab";
@@ -51,7 +51,6 @@ const App = (): JSX.Element => {
     };
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        console.log(e.target.value);
         setSearchValue(e.target.value);
     };
 
@@ -66,7 +65,7 @@ const App = (): JSX.Element => {
                 <Modal.Footer>
                     <a
                         className="btn btn-primary "
-                        href={`${auth}?response_type=${type}&client_id=${client_id}&redirect_uri=${redirect}`}
+                        href={`${auth}?response_type=${type}&client_id=${client_id}&redirect_uri=${redirect}&scope=playlist-modify-public`}
                     >
                         Log in
                     </a>

@@ -29,7 +29,7 @@ export const getMultipleTracks = async (
             array.splice(0, 1);
         } catch (err) {
             if (array.length <= 1) {
-                throw new Error("Couldn't create playlist");
+                throw new Error("Couldn't get tracks from search results");
             } else {
                 const firstItem = array.splice(0, 2).join(" ");
                 array.unshift(firstItem);
@@ -43,18 +43,17 @@ export const createPlaylist = async (
     token: string
 ): Promise<any> => {
         try {
-            const userdata = await fetchFromSpotify("me", token);
-            console.log(userdata.id);
-            const res = await fetch(`https://api.spotify.com/v1/users/${userdata.id}/playlists`, {
+            const res = await fetch(`https://api.spotify.com/v1/users/me/playlists`, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({
-                    "name": "New Playlist",
-                    "description": "New playlist description",
+                    "name": "Testing",
+                    "description": "Description of the playlist",
                     "public": false
                 }),
+                method:"POST",
             });
         const data = await res.json();
         console.log(data);
@@ -81,6 +80,7 @@ export const addToPlaylist = async(
                 body: JSON.stringify({
                     "uris": tracksUris
                 }),
+                method:"POST",
             });
     } catch (err) {
         throw new Error("Couldn't add item to playlist");
