@@ -40,24 +40,26 @@ export const getMultipleTracks = async (
 };
 
 export const createPlaylist = async (
-    token: string
+    token: string,
+    name: string
 ): Promise<any> => {
         try {
-            const res = await fetch(`https://api.spotify.com/v1/users/me/playlists`, {
+            const userdata = await fetchFromSpotify("me", token)
+
+            const res = await fetch(`https://api.spotify.com/v1/users/${userdata.id}/playlists`, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({
-                    "name": "Testing",
+                    "name": name,
                     "description": "Description of the playlist",
-                    "public": false
+                    "public": true
                 }),
                 method:"POST",
             });
         const data = await res.json();
-        console.log(data);
-        return data;
+        return data.id;
         } catch (err) {
             throw new Error("Couldn't create playlist");
         }
