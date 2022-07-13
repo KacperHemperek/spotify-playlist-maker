@@ -42,6 +42,7 @@ const App = (): JSX.Element => {
                 console.log(res);
                 setSearchResults(res);
                 const playlistID = await createPlaylist(spotifyToken, playlistNameRef.current?.value);
+
                 addToPlaylist(spotifyToken, playlistID, res);
                 setLoading(false);
             } catch (err) {
@@ -73,7 +74,7 @@ const App = (): JSX.Element => {
                 </Modal.Footer>
             </Modal>
 
-            <Container className="mx-md-5 p-3 p-md-5 mt-5 text-center">
+            <Container className="mx-md-5 p-3 p-md-5 mt-5 text-start">
                 <Row className="g-5">
                     <Col md="7">
                     <Form className="mb-5" onSubmit={handleSubmit}>
@@ -87,20 +88,22 @@ const App = (): JSX.Element => {
                         </Form>
 
                         <Form onSubmit={handleSubmit}>
-                            <InputGroup>
-                                <Form.Control
-                                    ref={searchRef}
-                                    type="text"
-                                    onChange={handleChange}
-                                />
-                                <Button
-                                    variant="success"
-                                    type="submit"
-                                    disabled={searchRef.current?.value === ""}
-                                >
-                                    {loading ? "Loading..." : "Create Playlist"}
-                                </Button>
-                            </InputGroup>
+                            <Form.Label htmlFor="text">Input text</Form.Label>
+                            <Form.Control
+                                id="text"
+                                ref={searchRef}
+                                type="text"
+                                onChange={handleChange}
+                                placeholder="Input your text here..."
+                            />
+                            <Button
+                                className="mt-4"
+                                variant="success"
+                                type="submit"
+                                disabled={searchRef.current?.value === ""}
+                            >
+                                {loading ? "Loading..." : "Create Playlist"}
+                            </Button>
                         </Form>
 
                         
