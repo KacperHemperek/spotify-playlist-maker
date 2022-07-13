@@ -3,12 +3,15 @@ import React, { ChangeEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import { Col, Form, InputGroup, Modal, Row, Stack } from "react-bootstrap";
 import Container from "react-bootstrap/esm/Container";
-import { getMultipleTracks, createPlaylist, addToPlaylist } from "./utils/Spotify.utils";
+import {
+    getMultipleTracks,
+    createPlaylist,
+    addToPlaylist,
+} from "./utils/Spotify.utils";
 import Track from "./components/Track";
 
 const App = (): JSX.Element => {
     const client_id = "71a0250dc8674aa0b6d49ec82695bfab";
-    const redirect = "http://localhost:3000";
     const auth = "https://accounts.spotify.com/authorize";
     const type = "token";
     const searchRef = useRef<HTMLInputElement | null>(null);
@@ -41,7 +44,10 @@ const App = (): JSX.Element => {
                 );
                 console.log(res);
                 setSearchResults(res);
-                const playlistID = await createPlaylist(spotifyToken, playlistNameRef.current?.value);
+                const playlistID = await createPlaylist(
+                    spotifyToken,
+                    playlistNameRef.current?.value
+                );
 
                 addToPlaylist(spotifyToken, playlistID, res);
                 setLoading(false);
@@ -67,7 +73,7 @@ const App = (): JSX.Element => {
                 <Modal.Footer>
                     <a
                         className="btn btn-primary "
-                        href={`${auth}?response_type=${type}&client_id=${client_id}&redirect_uri=${redirect}&scope=playlist-modify-public`}
+                        href={`${auth}?response_type=${type}&client_id=${client_id}&redirect_uri=${process.env.REACT_APP_REDIRECT_URL}&scope=playlist-modify-public`}
                     >
                         Log in
                     </a>
@@ -77,7 +83,7 @@ const App = (): JSX.Element => {
             <Container className="mx-md-5 p-3 p-md-5 mt-5 text-start">
                 <Row className="g-5">
                     <Col md="7">
-                    <Form className="mb-5" onSubmit={handleSubmit}>
+                        <Form className="mb-5" onSubmit={handleSubmit}>
                             <InputGroup>
                                 <Form.Control
                                     ref={playlistNameRef}
@@ -105,8 +111,6 @@ const App = (): JSX.Element => {
                                 {loading ? "Loading..." : "Create Playlist"}
                             </Button>
                         </Form>
-
-                        
                     </Col>
                     <Col md="5">
                         <Stack>
@@ -127,8 +131,6 @@ const App = (): JSX.Element => {
                     </Col>
                 </Row>
             </Container>
-
-            
         </div>
     );
 };
