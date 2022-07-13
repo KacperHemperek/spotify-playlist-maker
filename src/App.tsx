@@ -36,6 +36,7 @@ const App = (): JSX.Element => {
         console.log("cokolwiek");
         if (textRef.current?.value) {
             try {
+                console.log("lalla");
                 const searchResult = await getMultipleTracks(
                     textRef.current.value,
                     spotifyToken
@@ -86,9 +87,7 @@ const App = (): JSX.Element => {
                             </Button>
                         </Form>
                     </Col>
-                    <Col>
-                    
-                    </Col>
+                    <Col></Col>
                 </Row>
             </Container>
         </div>
