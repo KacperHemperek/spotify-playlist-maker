@@ -10,7 +10,7 @@ export type Track = {
     title: string;
     authors: string[];
     img: string;
-}
+};
 
 const App = (): JSX.Element => {
     const client_id = "71a0250dc8674aa0b6d49ec82695bfab";
@@ -34,6 +34,7 @@ const App = (): JSX.Element => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        console.log("lalala");
         if (textRef.current?.value) {
             try {
                 const searchResult = await getMultipleTracks(
@@ -86,9 +87,7 @@ const App = (): JSX.Element => {
                             </Button>
                         </Form>
                     </Col>
-                    <Col>
-                    
-                    </Col>
+                    <Col></Col>
                 </Row>
             </Container>
         </div>
