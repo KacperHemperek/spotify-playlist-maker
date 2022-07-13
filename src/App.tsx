@@ -33,6 +33,7 @@ const App = (): JSX.Element => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        console.log("cokolwiek");
         if (textRef.current?.value) {
             try {
                 const searchResult = await getMultipleTracks(
