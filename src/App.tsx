@@ -63,7 +63,7 @@ const App = (): JSX.Element => {
     };
 
     return (
-        <div className="App ">
+        <Container>
             <Modal show={showPopup} backdrop="static" centered>
                 <Modal.Header>
                     <Modal.Title>
@@ -82,7 +82,7 @@ const App = (): JSX.Element => {
 
             <Container className="mx-md-5 p-3 p-md-5 mt-5 text-start">
                 <Row className="g-5">
-                    <Col md="7">
+                    <Col>
                         <Form className="mb-5" onSubmit={handleSubmit}>
                             <InputGroup>
                                 <Form.Control
@@ -112,7 +112,7 @@ const App = (): JSX.Element => {
                             </Button>
                         </Form>
                     </Col>
-                    <Col md="5">
+                    <Col>
                         <Stack>
                             {searchResults.map(
                                 ({ artists, name, album, uri }, idx) => (
@@ -131,7 +131,7 @@ const App = (): JSX.Element => {
                     </Col>
                 </Row>
             </Container>
-        </div>
+        </Container>
     );
 };
 
