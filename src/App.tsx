@@ -1,9 +1,15 @@
 import Button from "react-bootstrap/esm/Button";
 import React from "react";
 import { useEffect, useRef, useState } from "react";
-import { Col, Form, InputGroup, Modal, Row } from "react-bootstrap";
+import { Col, Form, InputGroup, ListGroup, Modal, Row } from "react-bootstrap";
 import Container from "react-bootstrap/esm/Container";
 import { getSearchResults, getMultipleTracks } from "./utils/Spotify.utils";
+
+export type Track = {
+    title: string;
+    author: string;
+    img: string;
+}
 
 const App = (): JSX.Element => {
     const client_id = "71a0250dc8674aa0b6d49ec82695bfab";
