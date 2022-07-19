@@ -112,7 +112,7 @@ export const getSearchResults = async (
                 if (data?.tracks?.items) {
                     track = data.tracks.items.find(
                         (item: any) =>
-                            item.name.toLowerCase() === q.toLowerCase()
+                            item.name.replace(/d/).toLowerCase() === q.toLowerCase()
                     );
                 }
 

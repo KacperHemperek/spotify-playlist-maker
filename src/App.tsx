@@ -1,5 +1,5 @@
 import Button from "react-bootstrap/esm/Button";
-import React, { ChangeEvent } from "react";
+import React from "react";
 import { useEffect, useRef, useState } from "react";
 import { Col, Form, InputGroup, Modal, Row, Stack } from "react-bootstrap";
 import Container from "react-bootstrap/esm/Container";
@@ -19,7 +19,7 @@ const App = (): JSX.Element => {
     const [spotifyToken, setSpotifyToken] = useState<string>("");
     const [showPopup, setShowPopup] = useState<boolean>(false);
     const [searchResults, setSearchResults] = useState<any[]>([]);
-    const [searchValue, setSearchValue] = useState<string>("");
+
     const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
@@ -58,10 +58,6 @@ const App = (): JSX.Element => {
         }
     };
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setSearchValue(e.target.value);
-    };
-
     return (
         <Container>
             <Modal show={showPopup} backdrop="static" centered>
@@ -84,8 +80,10 @@ const App = (): JSX.Element => {
                 <Row className="g-5">
                     <Col>
                         <Form className="mb-5" onSubmit={handleSubmit}>
+                            <Form.Label htmlFor="name">Input text</Form.Label>
                             <InputGroup>
                                 <Form.Control
+                                    id="name"
                                     ref={playlistNameRef}
                                     type="text"
                                     placeholder="Playlist Name"
@@ -99,7 +97,6 @@ const App = (): JSX.Element => {
                                 id="text"
                                 ref={searchRef}
                                 type="text"
-                                onChange={handleChange}
                                 placeholder="Input your text here..."
                             />
                             <Button
